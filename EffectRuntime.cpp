@@ -24,11 +24,11 @@ namespace D3DX11Effects
                                 D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS,
                                 D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS };
 
-bool SBaseBlock::ApplyAssignments(CEffect *pEffect)
+BOOL SBaseBlock::ApplyAssignments(CEffect *pEffect)
 {
     SAssignment *pAssignment = pAssignments;
     SAssignment *pLastAssn = pAssignments + AssignmentCount;
-    bool bRecreate = false;
+    BOOL bRecreate = false;
 
     for(; pAssignment < pLastAssn; pAssignment++)
     {
@@ -52,7 +52,7 @@ void SPassBlock::ApplyPassAssignments()
 }
 
 // Returns true if the shader uses global interfaces (since these interfaces can be updated through SetClassInstance)
-bool SPassBlock::CheckShaderDependencies( _In_ const SShaderBlock* pBlock )
+BOOL SPassBlock::CheckShaderDependencies( _In_ const SShaderBlock* pBlock )
 {
     if( pBlock->InterfaceDepCount > 0 )
     {
@@ -73,7 +73,7 @@ bool SPassBlock::CheckShaderDependencies( _In_ const SShaderBlock* pBlock )
 // Returns true if the pass (and sets HasDependencies) if the pass sets objects whose backing stores can be updated
 #pragma warning(push)
 #pragma warning(disable: 4616 6282)
-bool SPassBlock::CheckDependencies()
+BOOL SPassBlock::CheckDependencies()
 {
     if( HasDependencies )
         return true;
@@ -147,6 +147,11 @@ inline void CheckAndUpdateCB_FX(ID3D11DeviceContext *pContext, SConstantBuffer *
     }
 }
 
+//Global access
+void CEffect::CheckAndUpdateCB(ID3D11DeviceContext *pContext, SConstantBuffer *pCB)
+{
+	CheckAndUpdateCB_FX(pContext, pCB);
+}
 
 //--------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------
@@ -279,14 +284,14 @@ void CEffect::ApplyShaderBlock(_In_ SShaderBlock *pBlock)
 }
 
 // Returns true if the block D3D data was recreated
-bool CEffect::ApplyRenderStateBlock(_In_ SBaseBlock *pBlock)
+BOOL CEffect::ApplyRenderStateBlock(_In_ SBaseBlock *pBlock)
 {
     if( pBlock->IsUserManaged )
     {
         return false;
     }
 
-    bool bRecreate = pBlock->ApplyAssignments(this);
+    BOOL bRecreate = pBlock->ApplyAssignments(this);
 
     if (bRecreate)
     {
@@ -375,9 +380,9 @@ void CEffect::ValidateIndex(_In_ uint32_t Elements)
 }
 
 // Returns true if the assignment was changed
-bool CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
+BOOL CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
 {
-    bool bNeedUpdate = false;
+    BOOL bNeedUpdate = false;
     SGlobalVariable *pVarDep0, *pVarDep1;
     
     switch (pAssignment->AssignmentType)
@@ -449,7 +454,7 @@ bool CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
 }
 
 // Returns false if this shader has interface dependencies which are nullptr (SetShader will fail).
-bool CEffect::ValidateShaderBlock( _Inout_ SShaderBlock* pBlock )
+BOOL CEffect::ValidateShaderBlock( _Inout_ SShaderBlock* pBlock )
 {
     if( !pBlock->IsValid )
         return false;
@@ -471,7 +476,7 @@ bool CEffect::ValidateShaderBlock( _Inout_ SShaderBlock* pBlock )
 }
 
 // Returns false if any state in the pass is invalid
-bool CEffect::ValidatePassBlock( _Inout_ SPassBlock* pBlock )
+BOOL CEffect::ValidatePassBlock( _Inout_ SPassBlock* pBlock )
 {
     pBlock->ApplyPassAssignments();
 

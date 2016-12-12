@@ -361,7 +361,7 @@ lExit:
 
 #undef _SET_BIT
 
-HRESULT SShaderBlock::GetShaderDesc(_Out_ D3DX11_EFFECT_SHADER_DESC *pDesc, _In_ bool IsInline)
+HRESULT SShaderBlock::GetShaderDesc(_Out_ D3DX11_EFFECT_SHADER_DESC *pDesc, _In_ BOOL IsInline)
 {
     HRESULT hr = S_OK;
     
@@ -1152,7 +1152,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
         return D3DERR_INVALIDCALL;
     }
 
-    bool featureLevelGE11 = ( pDevice->GetFeatureLevel() >= D3D_FEATURE_LEVEL_11_0 );
+    BOOL featureLevelGE11 = ( pDevice->GetFeatureLevel() >= D3D_FEATURE_LEVEL_11_0 );
 
     pDevice->AddRef();
     SAFE_RELEASE(m_pDevice);
@@ -1576,7 +1576,7 @@ SGlobalVariable * CEffect::FindLocalVariableByName(_In_z_ LPCSTR pName)
 // which means that simple sub-types (numeric types) have already
 // been pooled.
 //
-bool SType::IsEqual(SType *pOtherType) const
+BOOL SType::IsEqual(SType *pOtherType) const
 {
     if (VarType != pOtherType->VarType || Elements != pOtherType->Elements
         || strcmp(pTypeName, pOtherType->pTypeName) != 0)
@@ -1653,7 +1653,7 @@ bool SType::IsEqual(SType *pOtherType) const
     return true;
 }
 
-uint32_t SType::GetTotalUnpackedSize(_In_ bool IsSingleElement) const
+uint32_t SType::GetTotalUnpackedSize(_In_ BOOL IsSingleElement) const
 {
     if (VarType == EVT_Object)
     {
@@ -1675,7 +1675,7 @@ uint32_t SType::GetTotalUnpackedSize(_In_ bool IsSingleElement) const
     }
 }
 
-uint32_t SType::GetTotalPackedSize(_In_ bool IsSingleElement) const
+uint32_t SType::GetTotalPackedSize(_In_ BOOL IsSingleElement) const
 {
     if (Elements > 0 && IsSingleElement)
     {
@@ -1703,7 +1703,7 @@ SConstantBuffer *CEffect::FindCB(_In_z_ LPCSTR pName)
     return nullptr;
 }
 
-bool CEffect::IsOptimized()
+BOOL CEffect::IsOptimized()
 {
     if ((m_Flags & D3DX11_EFFECT_OPTIMIZED) != 0)
     {
@@ -2221,7 +2221,7 @@ lExit:
 
 // Move all type pointers using pMappingTable.
 // This is called after creating the optimized type pool or during cloning.
-HRESULT CEffect::OptimizeTypes(_Inout_ CPointerMappingTable *pMappingTable, _In_ bool Cloning)
+HRESULT CEffect::OptimizeTypes(_Inout_ CPointerMappingTable *pMappingTable, _In_ BOOL Cloning)
 {
     HRESULT hr = S_OK;
 
@@ -2479,7 +2479,7 @@ lExit:
     return hr;
 }
 
-SMember * CreateNewMember(_In_ SType *pType, _In_ bool IsAnnotation)
+SMember * CreateNewMember(_In_ SType *pType, _In_ BOOL IsAnnotation)
 {
     switch (pType->VarType)
     {
@@ -2752,7 +2752,7 @@ SMember * CreateNewMember(_In_ SType *pType, _In_ bool IsAnnotation)
 }
 
 // Global variables are created in place because storage for them was allocated during LoadEffect
-HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnnotation)
+HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ BOOL IsAnnotation)
 {
     switch (pType->VarType)
     {

@@ -222,26 +222,26 @@ enum EObjectType
     EOT_ConsumeStructuredBuffer,
 };
 
-inline bool IsObjectTypeHelper(EVarType InVarType,
+inline BOOL IsObjectTypeHelper(EVarType InVarType,
                                      EObjectType InObjType,
                                      EObjectType TargetObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == TargetObjType);
 }
 
-inline bool IsSamplerHelper(EVarType InVarType,
+inline BOOL IsSamplerHelper(EVarType InVarType,
                                   EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == EOT_Sampler);
 }
 
-inline bool IsStateBlockObjectHelper(EVarType InVarType,
+inline BOOL IsStateBlockObjectHelper(EVarType InVarType,
                                            EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_Blend) || (InObjType == EOT_DepthStencil) || (InObjType == EOT_Rasterizer) || IsSamplerHelper(InVarType, InObjType));
 }
 
-inline bool IsShaderHelper(EVarType InVarType,
+inline BOOL IsShaderHelper(EVarType InVarType,
                                  EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_VertexShader) ||
@@ -256,7 +256,7 @@ inline bool IsShaderHelper(EVarType InVarType,
                                          (InObjType == EOT_PixelShader5));
 }
 
-inline bool IsShader5Helper(EVarType InVarType,
+inline BOOL IsShader5Helper(EVarType InVarType,
                                   EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_VertexShader5) ||
@@ -267,13 +267,13 @@ inline bool IsShader5Helper(EVarType InVarType,
                                          (InObjType == EOT_PixelShader5));
 }
 
-inline bool IsInterfaceHelper(EVarType InVarType, EObjectType InObjType)
+inline BOOL IsInterfaceHelper(EVarType InVarType, EObjectType InObjType)
 {
     UNREFERENCED_PARAMETER(InObjType);
     return (InVarType == EVT_Interface);
 }
 
-inline bool IsShaderResourceHelper(EVarType InVarType,
+inline BOOL IsShaderResourceHelper(EVarType InVarType,
                                          EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_Texture) ||
@@ -291,7 +291,7 @@ inline bool IsShaderResourceHelper(EVarType InVarType,
                                          (InObjType == EOT_ByteAddressBuffer));
 }
 
-inline bool IsUnorderedAccessViewHelper(EVarType InVarType,
+inline BOOL IsUnorderedAccessViewHelper(EVarType InVarType,
                                               EObjectType InObjType)
 {
     return (InVarType == EVT_Object) &&
@@ -309,19 +309,19 @@ inline bool IsUnorderedAccessViewHelper(EVarType InVarType,
          (InObjType == EOT_ConsumeStructuredBuffer));
 }
 
-inline bool IsRenderTargetViewHelper(EVarType InVarType,
+inline BOOL IsRenderTargetViewHelper(EVarType InVarType,
                                            EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == EOT_RenderTargetView);
 }
 
-inline bool IsDepthStencilViewHelper(EVarType InVarType,
+inline BOOL IsDepthStencilViewHelper(EVarType InVarType,
                                            EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == EOT_DepthStencilView);
 }
 
-inline bool IsObjectAssignmentHelper(ELhsType LhsType)
+inline BOOL IsObjectAssignmentHelper(ELhsType LhsType)
 {
     switch(LhsType)
     {
@@ -404,7 +404,7 @@ struct SBinaryHeader
     uint32_t    cTotalShaders;
     uint32_t    cInlineShaders; // of the aforementioned shaders, the number that are defined inline within pass blocks
 
-    inline bool RequiresPool() const
+    inline BOOL RequiresPool() const
     {
         return (Pool.cCBs != 0) ||
                (Pool.cNumericVariables != 0) ||

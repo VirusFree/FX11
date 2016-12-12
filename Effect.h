@@ -215,58 +215,58 @@ struct SType : public ID3DX11EffectType
         ZeroMemory( &StructType, sizeof(StructType) );
     }
 
-    bool IsEqual(SType *pOtherType) const;
+    BOOL IsEqual(SType *pOtherType) const;
     
-    bool IsObjectType(EObjectType ObjType) const
+    BOOL IsObjectType(EObjectType ObjType) const
     {
         return IsObjectTypeHelper(VarType, ObjectType, ObjType);
     }
-    bool IsShader() const
+    BOOL IsShader() const
     {
         return IsShaderHelper(VarType, ObjectType);
     }
-    bool BelongsInConstantBuffer() const
+    BOOL BelongsInConstantBuffer() const
     {
         return (VarType == EVT_Numeric) || (VarType == EVT_Struct);
     }
-    bool IsStateBlockObject() const
+    BOOL IsStateBlockObject() const
     {
         return IsStateBlockObjectHelper(VarType, ObjectType);
     }
-    bool IsClassInstance() const
+    BOOL IsClassInstance() const
     {
         return (VarType == EVT_Struct) && StructType.ImplementsInterface;
     }
-    bool IsInterface() const
+    BOOL IsInterface() const
     {
         return IsInterfaceHelper(VarType, ObjectType);
     }
-    bool IsShaderResource() const
+    BOOL IsShaderResource() const
     {
         return IsShaderResourceHelper(VarType, ObjectType);
     }
-    bool IsUnorderedAccessView() const
+    BOOL IsUnorderedAccessView() const
     {
         return IsUnorderedAccessViewHelper(VarType, ObjectType);
     }
-    bool IsSampler() const
+    BOOL IsSampler() const
     {
         return IsSamplerHelper(VarType, ObjectType);
     }
-    bool IsRenderTargetView() const
+    BOOL IsRenderTargetView() const
     {
         return IsRenderTargetViewHelper(VarType, ObjectType);
     }
-    bool IsDepthStencilView() const
+    BOOL IsDepthStencilView() const
     {
         return IsDepthStencilViewHelper(VarType, ObjectType);
     }
 
-    uint32_t GetTotalUnpackedSize(_In_ bool IsSingleElement) const; 
-    uint32_t GetTotalPackedSize(_In_ bool IsSingleElement) const; 
-    HRESULT GetDescHelper(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc, _In_ bool IsSingleElement) const;
+    uint32_t GetTotalUnpackedSize(_In_ BOOL IsSingleElement) const; 
+    uint32_t GetTotalPackedSize(_In_ BOOL IsSingleElement) const; 
+    HRESULT GetDescHelper(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc, _In_ BOOL IsSingleElement) const;
 
-    STDMETHOD_(bool, IsValid)() override { return true; }
+    STDMETHOD_(BOOL, IsValid)() override { return true; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override { return GetDescHelper(pDesc, false); }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(_In_ uint32_t Index) override;
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(_In_z_ LPCSTR Name) override;
@@ -284,7 +284,7 @@ struct SSingleElementType : public ID3DX11EffectType
 {
     SType *pType;
 
-    STDMETHOD_(bool, IsValid)() override { return true; }
+    STDMETHOD_(BOOL, IsValid)() override { return true; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override { return ((SType*)pType)->GetDescHelper(pDesc, true); }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(uint32_t Index) override { return ((SType*)pType)->GetMemberTypeByIndex(Index); }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name) override { return ((SType*)pType)->GetMemberTypeByName(Name); }
@@ -305,14 +305,14 @@ struct SBaseBlock
 {
     EBlockType      BlockType;
 
-    bool            IsUserManaged:1;
+    BOOL            IsUserManaged:1;
 
     uint32_t        AssignmentCount;
     SAssignment     *pAssignments;
 
     SBaseBlock();
 
-    bool ApplyAssignments(CEffect *pEffect);
+    BOOL ApplyAssignments(CEffect *pEffect);
 
     inline SSamplerBlock *AsSampler() const
     {
@@ -355,12 +355,12 @@ struct STechnique : public ID3DX11EffectTechnique
     uint32_t    AnnotationCount;
     SAnnotation *pAnnotations;
 
-    bool        InitiallyValid;
-    bool        HasDependencies;
+    BOOL        InitiallyValid;
+    BOOL        HasDependencies;
 
     STechnique();
 
-    STDMETHOD_(bool, IsValid)() override;
+    STDMETHOD_(BOOL, IsValid)() override;
     STDMETHOD(GetDesc)(_Out_ D3DX11_TECHNIQUE_DESC *pDesc) override;
 
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(_In_ uint32_t Index) override;
@@ -384,12 +384,12 @@ struct SGroup : public ID3DX11EffectGroup
     uint32_t    AnnotationCount;
     SAnnotation *pAnnotations;
 
-    bool        InitiallyValid;
-    bool        HasDependencies;
+    BOOL        InitiallyValid;
+    BOOL        HasDependencies;
 
     SGroup();
 
-    STDMETHOD_(bool, IsValid)() override;
+    STDMETHOD_(BOOL, IsValid)() override;
     STDMETHOD(GetDesc)(_Out_ D3DX11_GROUP_DESC *pDesc) override;
 
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(_In_ uint32_t Index) override;
@@ -438,19 +438,19 @@ struct SPassBlock : SBaseBlock, public ID3DX11EffectPass
 
     CEffect     *pEffect;
 
-    bool        InitiallyValid;         // validity of all state objects and shaders in pass upon BindToDevice
-    bool        HasDependencies;        // if pass expressions or pass state blocks have dependencies on variables (if true, IsValid != InitiallyValid possibly)
+    BOOL        InitiallyValid;         // validity of all state objects and shaders in pass upon BindToDevice
+    BOOL        HasDependencies;        // if pass expressions or pass state blocks have dependencies on variables (if true, IsValid != InitiallyValid possibly)
 
     SPassBlock();
 
     void ApplyPassAssignments();
-    bool CheckShaderDependencies( _In_ const SShaderBlock* pBlock );
-    bool CheckDependencies();
+    BOOL CheckShaderDependencies( _In_ const SShaderBlock* pBlock );
+    BOOL CheckDependencies();
 
     template<EObjectType EShaderType>
     HRESULT GetShaderDescHelper(_Out_ D3DX11_PASS_SHADER_DESC *pDesc);
 
-    STDMETHOD_(bool, IsValid)() override;
+    STDMETHOD_(BOOL, IsValid)() override;
     STDMETHOD(GetDesc)(_Out_ D3DX11_PASS_DESC *pDesc) override;
 
     STDMETHOD(GetVertexShaderDesc)(_Out_ D3DX11_PASS_SHADER_DESC *pDesc) override;
@@ -474,7 +474,7 @@ struct SDepthStencilBlock : SBaseBlock
 {
     ID3D11DepthStencilState *pDSObject;
     D3D11_DEPTH_STENCIL_DESC BackingStore;
-    bool                     IsValid;
+    BOOL                     IsValid;
 
     SDepthStencilBlock();
 };
@@ -483,7 +483,7 @@ struct SBlendBlock : SBaseBlock
 {
     ID3D11BlendState        *pBlendObject;
     D3D11_BLEND_DESC        BackingStore;
-    bool                    IsValid;
+    BOOL                    IsValid;
 
     SBlendBlock();
 };
@@ -492,7 +492,7 @@ struct SRasterizerBlock : SBaseBlock
 {
     ID3D11RasterizerState   *pRasterizerObject;
     D3D11_RASTERIZER_DESC   BackingStore;
-    bool                    IsValid;
+    BOOL                    IsValid;
 
     SRasterizerBlock();
 };
@@ -620,7 +620,7 @@ struct SShaderBlock
         SInterfaceParameter         *pInterfaceParameters;      // set with BindInterfaces (used for function interface parameters)
     };
 
-    bool                            IsValid;
+    BOOL                            IsValid;
     SD3DShaderVTable                *pVT;                
 
     // This value is nullptr if the shader is nullptr or was never initialized
@@ -658,7 +658,7 @@ struct SShaderBlock
     // Public API helpers
     HRESULT ComputeStateBlockMask(_Inout_ D3DX11_STATE_BLOCK_MASK *pStateBlockMask);
 
-    HRESULT GetShaderDesc(_Out_ D3DX11_EFFECT_SHADER_DESC *pDesc, _In_ bool IsInline);
+    HRESULT GetShaderDesc(_Out_ D3DX11_EFFECT_SHADER_DESC *pDesc, _In_ BOOL IsInline);
 
     HRESULT GetVertexShader(_Outptr_ ID3D11VertexShader **ppVS);
     HRESULT GetGeometryShader(_Outptr_ ID3D11GeometryShader **ppGS);
@@ -735,7 +735,7 @@ struct SAnonymousShader : public TUncastableVariable<ID3DX11EffectShaderVariable
     SAnonymousShader(_In_opt_ SShaderBlock *pBlock = nullptr);
 
     // ID3DX11EffectShaderVariable interface
-    STDMETHOD_(bool, IsValid)() override;
+    STDMETHOD_(BOOL, IsValid)() override;
     STDMETHOD_(ID3DX11EffectType*, GetType)() override;
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_VARIABLE_DESC *pDesc) override;
 
@@ -802,14 +802,14 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
     SGlobalVariable         *pVariables;        // array of size [VariableCount], points into effect's contiguous variable list
     uint32_t                ExplicitBindPoint;  // Used when a CB has been explicitly bound (register(bXX)). -1 if not
 
-    bool                    IsDirty:1;          // Set when any member is updated; cleared on CB apply    
-    bool                    IsTBuffer:1;        // true iff TBuffer.pShaderResource != nullptr
-    bool                    IsUserManaged:1;    // Set if you don't want effects to update this buffer
-    bool                    IsEffectOptimized:1;// Set if the effect has been optimized
-    bool                    IsUsedByExpression:1;// Set if used by any expressions
-    bool                    IsUserPacked:1;     // Set if the elements have user-specified offsets
-    bool                    IsSingle:1;         // Set to true if you want to share this CB with cloned Effects
-    bool                    IsNonUpdatable:1;   // Set to true if you want to share this CB with cloned Effects
+    BOOL                    IsDirty:1;          // Set when any member is updated; cleared on CB apply    
+    BOOL                    IsTBuffer:1;        // true iff TBuffer.pShaderResource != nullptr
+    BOOL                    IsUserManaged:1;    // Set if you don't want effects to update this buffer
+    BOOL                    IsEffectOptimized:1;// Set if the effect has been optimized
+    BOOL                    IsUsedByExpression:1;// Set if used by any expressions
+    BOOL                    IsUserPacked:1;     // Set if the elements have user-specified offsets
+    BOOL                    IsSingle:1;         // Set to true if you want to share this CB with cloned Effects
+    BOOL                    IsNonUpdatable:1;   // Set to true if you want to share this CB with cloned Effects
 
     union
     {
@@ -843,10 +843,10 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
         pEffect = nullptr;
     }
 
-    bool ClonedSingle() const;
+    BOOL ClonedSingle() const;
 
     // ID3DX11EffectConstantBuffer interface
-    STDMETHOD_(bool, IsValid)() override;
+    STDMETHOD_(BOOL, IsValid)() override;
     STDMETHOD_(ID3DX11EffectType*, GetType)() override;
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_VARIABLE_DESC *pDesc) override;
 
@@ -874,6 +874,8 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
     STDMETHOD(SetTextureBuffer)(_In_ ID3D11ShaderResourceView *pTextureBuffer) override;
     STDMETHOD(GetTextureBuffer)(_Outptr_ ID3D11ShaderResourceView **ppTextureBuffer) override;
     STDMETHOD(UndoSetTextureBuffer)() override;
+
+	STDMETHOD(CheckAndUpdate)(ID3D11DeviceContext *pContext);
 
     // ID3DX11EffectType interface
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override;
@@ -953,7 +955,7 @@ struct SAssignment
     uint32_t                MaxElements : 16;   // Max allowable index (needed because we don't store object arrays as dependencies,
                                                 // and therefore have no way of getting their Element count)
 
-    bool IsObjectAssignment()                   // True for Shader and RObject assignments (the type that appear in pass blocks)
+    BOOL IsObjectAssignment()                   // True for Shader and RObject assignments (the type that appear in pass blocks)
     {
         return IsObjectAssignmentHelper(LhsType);
     }
@@ -988,7 +990,7 @@ struct SPointerMapping
     void *pOld;
     void *pNew;
 
-    static bool AreMappingsEqual(const SPointerMapping &pMap1, const SPointerMapping &pMap2)
+    static BOOL AreMappingsEqual(const SPointerMapping &pMap1, const SPointerMapping &pMap2)
     {
         return (pMap1.pOld == pMap2.pOld);
     }
@@ -1011,7 +1013,7 @@ protected:
     uint32_t    m_dwBufferSize;
     uint32_t    m_dwSize;
 
-    template <bool bCopyData>
+    template <BOOL bCopyData>
     HRESULT AddDataInternal(_In_reads_bytes_(dwSize) const void *pData, _In_ uint32_t dwSize, _Outptr_ void **ppPointer);
 
 public:
@@ -1034,7 +1036,7 @@ public:
     HRESULT MoveInterfaceParameters(_In_ uint32_t InterfaceCount, _Inout_updates_(1) SShaderBlock::SInterfaceParameter **ppInterfaces);
     HRESULT MoveEmptyDataBlock(_Inout_updates_(1) void **ppData, _In_ uint32_t size);
 
-    bool IsInHeap(_In_ void *pData) const
+    BOOL IsInHeap(_In_ void *pData) const
     {
         return (pData >= m_pData && pData < (m_pData + m_dwBufferSize));
     }
@@ -1143,8 +1145,8 @@ protected:
     // String & Type pooling
 
     typedef SType *LPSRUNTIMETYPE;
-    static bool AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2) { return (pType1->IsEqual(pType2)); }
-    static bool AreStringsEqual(const LPCSTR &pStr1, const LPCSTR &pStr2) { return strcmp(pStr1, pStr2) == 0; }
+    static BOOL AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2) { return (pType1->IsEqual(pType2)); }
+    static BOOL AreStringsEqual(const LPCSTR &pStr1, const LPCSTR &pStr2) { return strcmp(pStr1, pStr2) == 0; }
 
     typedef CEffectHashTableWithPrivateHeap<SType *, AreTypesEqual> CTypeHashTable;
     typedef CEffectHashTableWithPrivateHeap<LPCSTR, AreStringsEqual> CStringHashTable;
@@ -1162,20 +1164,21 @@ protected:
     void AddStringToPool(const char **ppString);
     void AddTypeToPool(SType **ppType);
 
-    HRESULT OptimizeTypes(_Inout_ CPointerMappingTable *pMappingTable, _In_ bool Cloning = false);
+    HRESULT OptimizeTypes(_Inout_ CPointerMappingTable *pMappingTable, _In_ BOOL Cloning = false);
 
 
     //////////////////////////////////////////////////////////////////////////    
     // Runtime (performance critical)
     
     void ApplyShaderBlock(_In_ SShaderBlock *pBlock);
-    bool ApplyRenderStateBlock(_In_ SBaseBlock *pBlock);
-    bool ApplySamplerBlock(_In_ SSamplerBlock *pBlock);
+    BOOL ApplyRenderStateBlock(_In_ SBaseBlock *pBlock);
+    BOOL ApplySamplerBlock(_In_ SSamplerBlock *pBlock);
     void ApplyPassBlock(_Inout_ SPassBlock *pBlock);
-    bool EvaluateAssignment(_Inout_  SAssignment *pAssignment);
-    bool ValidateShaderBlock(_Inout_ SShaderBlock* pBlock );
-    bool ValidatePassBlock(_Inout_ SPassBlock* pBlock );
-    
+    BOOL EvaluateAssignment(_Inout_  SAssignment *pAssignment);
+    BOOL ValidateShaderBlock(_Inout_ SShaderBlock* pBlock );
+    BOOL ValidatePassBlock(_Inout_ SPassBlock* pBlock );
+	void CheckAndUpdateCB(ID3D11DeviceContext *pContext, SConstantBuffer *pCB);
+
     //////////////////////////////////////////////////////////////////////////    
     // Non-runtime functions (not performance critical)    
 
@@ -1213,8 +1216,8 @@ public:
 
     Timer GetCurrentTime() const { return m_LocalTimer; }
     
-    bool IsReflectionData(void *pData) const { return m_pReflection->m_Heap.IsInHeap(pData); }
-    bool IsRuntimeData(void *pData) const { return m_Heap.IsInHeap(pData); }
+    BOOL IsReflectionData(void *pData) const { return m_pReflection->m_Heap.IsInHeap(pData); }
+    BOOL IsRuntimeData(void *pData) const { return m_Heap.IsInHeap(pData); }
 
     //////////////////////////////////////////////////////////////////////////    
     // Public interface
@@ -1225,7 +1228,7 @@ public:
     STDMETHOD_(ULONG, Release)() override;
 
     // ID3DX11Effect
-    STDMETHOD_(bool, IsValid)() override { return true; }
+    STDMETHOD_(BOOL, IsValid)() override { return true; }
 
     STDMETHOD(GetDevice)(_Outptr_ ID3D11Device** ppDevice) override;    
 
@@ -1248,7 +1251,7 @@ public:
 
     STDMETHOD(CloneEffect)(_In_ uint32_t Flags, _Outptr_ ID3DX11Effect** ppClonedEffect) override;
     STDMETHOD(Optimize)() override;
-    STDMETHOD_(bool, IsOptimized)() override;
+    STDMETHOD_(BOOL, IsOptimized)() override;
 
     //////////////////////////////////////////////////////////////////////////    
     // New reflection helpers
@@ -1256,7 +1259,7 @@ public:
     ID3DX11EffectType * CreatePooledSingleElementTypeInterface(_In_ SType *pType);
     ID3DX11EffectVariable * CreatePooledVariableMemberInterface(_In_ TTopLevelVariable<ID3DX11EffectVariable> *pTopLevelEntity,
                                                                 _In_ const SVariable *pMember,
-                                                                _In_ const UDataPointer Data, _In_ bool IsSingleElement, _In_ uint32_t Index);
+                                                                _In_ const UDataPointer Data, _In_ BOOL IsSingleElement, _In_ uint32_t Index);
 
 };
 

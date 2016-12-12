@@ -106,7 +106,7 @@ static HRESULT LoadBinaryFromFile( _In_z_ LPCWSTR pFileName, _Inout_ std::unique
 
 _Use_decl_annotations_
 HRESULT WINAPI D3DX11CreateEffectFromMemory(LPCVOID pData, SIZE_T DataLength, UINT FXFlags,
-                                            ID3D11Device *pDevice, ID3DX11Effect **ppEffect, LPCSTR srcName )
+                                            ID3D11Device *pDevice, ID3DX11Effect **ppEffect )
 {
     if ( !pData || !DataLength || !pDevice || !ppEffect )
         return E_INVALIDARG;
@@ -119,7 +119,7 @@ HRESULT WINAPI D3DX11CreateEffectFromMemory(LPCVOID pData, SIZE_T DataLength, UI
     // Note that pData must point to a compiled effect, not HLSL
     VN( *ppEffect = new CEffect( FXFlags & D3DX11_EFFECT_RUNTIME_VALID_FLAGS) );
     VH( ((CEffect*)(*ppEffect))->LoadEffect(pData, static_cast<uint32_t>(DataLength) ) );
-    VH( ((CEffect*)(*ppEffect))->BindToDevice(pDevice, (srcName) ? srcName : "D3DX11Effect" ) );
+    VH( ((CEffect*)(*ppEffect))->BindToDevice(pDevice, "D3DX11Effect" ) );
 
 lExit:
     if (FAILED(hr))
@@ -128,57 +128,6 @@ lExit:
     }
     return hr;
 }
-
-//--------------------------------------------------------------------------------------
-
-_Use_decl_annotations_
-HRESULT WINAPI D3DX11CreateEffectFromFile( LPCWSTR pFileName, UINT FXFlags, ID3D11Device *pDevice, ID3DX11Effect **ppEffect )
-{
-    if ( !pFileName || !pDevice || !ppEffect )
-        return E_INVALIDARG;
-
-    std::unique_ptr<uint8_t[]> fileData;
-    uint32_t size;
-    HRESULT hr = LoadBinaryFromFile( pFileName, fileData, size );
-    if ( FAILED(hr) )
-        return hr;
-
-    hr = S_OK;
-
-    // Note that pData must point to a compiled effect, not HLSL
-    VN( *ppEffect = new CEffect( FXFlags & D3DX11_EFFECT_RUNTIME_VALID_FLAGS) );
-    VH( ((CEffect*)(*ppEffect))->LoadEffect( fileData.get(), size ) );
-
-    // Create debug object name from input filename
-    CHAR strFileA[MAX_PATH];
-    int result = WideCharToMultiByte( CP_ACP, WC_NO_BEST_FIT_CHARS, pFileName, -1, strFileA, MAX_PATH, nullptr, FALSE );
-    if ( !result )
-    {
-        DPF(0, "Failed to load effect file due to WC to MB conversion failure: %ls", pFileName);
-        hr = E_FAIL;
-        goto lExit;
-    }
-
-    const CHAR* pstrName = strrchr( strFileA, '\\' );
-    if (!pstrName)
-    {
-        pstrName = strFileA;
-    }
-    else
-    {
-        pstrName++;
-    }
-
-    VH( ((CEffect*)(*ppEffect))->BindToDevice(pDevice, pstrName) );
-
-lExit:
-    if (FAILED(hr))
-    {
-        SAFE_RELEASE(*ppEffect);
-    }
-    return hr;
-}
-
 
 //--------------------------------------------------------------------------------------
 

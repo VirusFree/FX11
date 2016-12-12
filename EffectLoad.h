@@ -115,8 +115,8 @@ protected:
 
     // Memory compactors
     HRESULT InitializeReflectionDataAndMoveStrings( uint32_t KnownSize = 0 );
-    HRESULT ReallocateReflectionData( bool Cloning = false );
-    HRESULT ReallocateEffectData( bool Cloning = false );
+    HRESULT ReallocateReflectionData( BOOL Cloning = false );
+    HRESULT ReallocateEffectData( BOOL Cloning = false );
     HRESULT ReallocateShaderBlocks();
     template<class T> HRESULT ReallocateBlockAssignments(T* &pBlocks, uint32_t  cBlocks, T* pOldBlocks = nullptr);
     HRESULT ReallocateAnnotationData(uint32_t  cAnnotations, SAnnotation **ppAnnotations);
@@ -130,7 +130,7 @@ protected:
     HRESULT FixupDSPointer(_Inout_ SDepthStencilBlock **ppDSBlock);
     HRESULT FixupABPointer(_Inout_ SBlendBlock **ppABBlock);
     HRESULT FixupRSPointer(_Inout_ SRasterizerBlock **ppRSBlock);
-    HRESULT FixupInterfacePointer(_Inout_ SInterface **ppInterface, _In_ bool CheckBackgroundInterfaces);
+    HRESULT FixupInterfacePointer(_Inout_ SInterface **ppInterface, _In_ BOOL CheckBackgroundInterfaces);
     HRESULT FixupShaderResourcePointer(_Inout_ SShaderResource **ppResource);
     HRESULT FixupUnorderedAccessViewPointer(_Inout_ SUnorderedAccessView **ppResource);
     HRESULT FixupRenderTargetViewPointer(_Inout_ SRenderTargetView **ppRenderTargetView);

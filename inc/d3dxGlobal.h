@@ -474,7 +474,7 @@ public:
 template <class T, T MaxValue> class CheckedNumber
 {
     T       m_Value;
-    bool    m_bValid;
+    BOOL    m_bValid;
 
 public:
     CheckedNumber<T, MaxValue>() : m_Value(0), m_bValid(true)
@@ -568,7 +568,7 @@ protected:
     uint8_t     *m_pData;
     CDataBlock  *m_pNext;
 
-    bool        m_IsAligned;        // Whether or not to align the data to c_DataAlignment
+    BOOL        m_IsAligned;        // Whether or not to align the data to c_DataAlignment
 
 public:
     // AddData appends an existing use buffer to the data block
@@ -594,7 +594,7 @@ protected:
     CDataBlock  *m_pLast;
     uint32_t    m_Size;
     uint32_t    m_Offset;           // m_Offset gets added to offsets returned from AddData & AddString. Use this to set a global for the entire string block
-    bool        m_IsAligned;        // Whether or not to align the data to c_DataAlignment
+    BOOL        m_IsAligned;        // Whether or not to align the data to c_DataAlignment
 
 public:
 #if _DEBUG
@@ -795,7 +795,7 @@ static const uint32_t c_PrimeSizes[] =
     1610612741,
 };
 
-template<typename T, bool (*pfnIsEqual)(const T &Data1, const T &Data2)>
+template<typename T, BOOL (*pfnIsEqual)(const T &Data1, const T &Data2)>
 class CEffectHashTable
 {
 protected:
@@ -811,7 +811,7 @@ protected:
     SHashEntry  **m_rgpHashEntries;
     uint32_t    m_NumHashSlots;
     uint32_t    m_NumEntries;
-    bool        m_bOwnHashEntryArray;
+    BOOL        m_bOwnHashEntryArray;
 
 public:
     class CIterator
@@ -950,7 +950,7 @@ public:
     HRESULT Grow(_In_ uint32_t DesiredSize,
                  _In_ uint32_t ProvidedArraySize = 0,
                  _In_reads_opt_(ProvidedArraySize) void** ProvidedArray = nullptr,
-                 _In_ bool OwnProvidedArray = false)
+                 _In_ BOOL OwnProvidedArray = false)
     {
         HRESULT hr = S_OK;
         SHashEntry **rgpNewHashEntries = nullptr;
@@ -1162,7 +1162,7 @@ lExit:
         }
     }
 
-    bool PastEnd(_Inout_ CIterator *pIterator)
+    BOOL PastEnd(_Inout_ CIterator *pIterator)
     {
         SHashEntry **ppEnd = m_rgpHashEntries + m_NumHashSlots;
         assert(pIterator->ppHashSlot >= m_rgpHashEntries && pIterator->ppHashSlot <= ppEnd);
@@ -1227,7 +1227,7 @@ lExit:
 // hash table can grow), but all hash entries are allocated on
 // a private heap
 
-template<typename T, bool (*pfnIsEqual)(const T &Data1, const T &Data2)>
+template<typename T, BOOL (*pfnIsEqual)(const T &Data1, const T &Data2)>
 class CEffectHashTableWithPrivateHeap : public CEffectHashTable<T, pfnIsEqual>
 {
 protected:

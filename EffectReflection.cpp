@@ -118,9 +118,9 @@ ID3DX11EffectType * CEffect::CreatePooledSingleElementTypeInterface(_In_ SType *
 _Use_decl_annotations_
 ID3DX11EffectVariable * CEffect::CreatePooledVariableMemberInterface(TTopLevelVariable<ID3DX11EffectVariable> *pTopLevelEntity,
                                                                      const SVariable *pMember,
-                                                                     const UDataPointer Data, bool IsSingleElement, uint32_t Index)
+                                                                     const UDataPointer Data, BOOL IsSingleElement, uint32_t Index)
 {
-    bool IsAnnotation;
+    BOOL IsAnnotation;
 
     if (IsOptimized())
     {
@@ -373,7 +373,7 @@ LPCSTR SType::GetMemberSemantic(_In_ uint32_t Index)
     return pVariable->pSemantic;
 }
 
-HRESULT SType::GetDescHelper(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc, _In_ bool IsSingleElement) const
+HRESULT SType::GetDescHelper(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc, _In_ BOOL IsSingleElement) const
 {
     HRESULT hr = S_OK;
     static LPCSTR pFuncName = "ID3DX11EffectType::GetDesc";
@@ -605,7 +605,7 @@ SAnonymousShader::SAnonymousShader(_In_opt_ SShaderBlock *pBlock) : pShaderBlock
 {
 }
 
-bool SAnonymousShader::IsValid()
+BOOL SAnonymousShader::IsValid()
 {
     return pShaderBlock && pShaderBlock->IsValid;
 }
@@ -919,7 +919,7 @@ LPCSTR SAnonymousShader::GetMemberSemantic(_In_ uint32_t Index)
 // ID3DX11EffectConstantBuffer (SConstantBuffer implementation)
 //////////////////////////////////////////////////////////////////////////
 
-bool SConstantBuffer::IsValid()
+BOOL SConstantBuffer::IsValid()
 {
     return true;
 }
@@ -1187,7 +1187,7 @@ lExit:
     return hr;
 }
 
-bool SConstantBuffer::ClonedSingle() const
+BOOL SConstantBuffer::ClonedSingle() const
 {
     return IsSingle && ( pEffect->m_Flags & D3DX11_EFFECT_CLONE );
 }
@@ -1223,6 +1223,15 @@ HRESULT SConstantBuffer::SetConstantBuffer(_In_ ID3D11Buffer *pConstantBuffer)
 
 lExit:
     return hr;
+}
+
+HRESULT SConstantBuffer::CheckAndUpdate(ID3D11DeviceContext *pContext)
+{
+	//"force" an update of constant buffer (without the need of applying a pass)
+	pEffect->CheckAndUpdateCB(pContext, this);
+
+	//ok..
+	return S_OK;
 }
 
 HRESULT SConstantBuffer::GetConstantBuffer(_Outptr_ ID3D11Buffer **ppConstantBuffer)
@@ -1368,7 +1377,7 @@ lExit:
 // ID3DX11EffectPass (CEffectPass implementation)
 //////////////////////////////////////////////////////////////////////////
 
-bool SPassBlock::IsValid()
+BOOL SPassBlock::IsValid()
 {
     if( HasDependencies )
         return pEffect->ValidatePassBlock( this );
@@ -1640,11 +1649,11 @@ HRESULT SPassBlock::ComputeStateBlockMask(_Inout_ D3DX11_STATE_BLOCK_MASK *pStat
     HRESULT hr = S_OK;
     
     // flags indicating whether the following shader types were caught by assignment checks or not
-    bool bVS = false, bGS = false, bPS = false, bHS = false, bDS = false, bCS = false;
+    BOOL bVS = false, bGS = false, bPS = false, bHS = false, bDS = false, bCS = false;
 
     for (size_t i = 0; i < AssignmentCount; ++ i)
     {
-        bool bShader = false;
+        BOOL bShader = false;
         
         switch (pAssignments[i].LhsType)
         {
@@ -1746,7 +1755,7 @@ lExit:
 // ID3DX11EffectTechnique (STechnique implementation)
 //////////////////////////////////////////////////////////////////////////
 
-bool STechnique::IsValid()
+BOOL STechnique::IsValid()
 { 
     if( HasDependencies )
     {
@@ -1842,7 +1851,7 @@ lExit:
 // ID3DX11EffectGroup (SGroup implementation)
 //////////////////////////////////////////////////////////////////////////
 
-bool SGroup::IsValid()
+BOOL SGroup::IsValid()
 { 
     if( HasDependencies )
     {

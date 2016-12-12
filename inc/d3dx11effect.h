@@ -219,7 +219,7 @@ DECLARE_INTERFACE_(ID3DX11EffectType, IUnknown)
     // IUnknown
 
     // ID3DX11EffectType
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
     STDMETHOD(GetDesc)(THIS_ _Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) PURE;
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(THIS_ _In_ uint32_t Index) PURE;
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(THIS_ _In_z_ LPCSTR Name) PURE;
@@ -292,7 +292,7 @@ DECLARE_INTERFACE_(ID3DX11EffectVariable, IUnknown)
     // IUnknown
 
     // ID3DX11EffectVariable
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
     STDMETHOD_(ID3DX11EffectType*, GetType)(THIS) PURE;
     STDMETHOD(GetDesc)(THIS_ _Out_ D3DX11_EFFECT_VARIABLE_DESC *pDesc) PURE;
     
@@ -360,11 +360,11 @@ DECLARE_INTERFACE_(ID3DX11EffectScalarVariable, ID3DX11EffectVariable)
     STDMETHOD(SetIntArray)(THIS_ _In_reads_(Count) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     STDMETHOD(GetIntArray)(THIS_ _Out_writes_(Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     
-    STDMETHOD(SetBool)(THIS_ _In_ const bool Value) PURE;
-    STDMETHOD(GetBool)(THIS_ _Out_ bool *pValue) PURE;
+    STDMETHOD(SetBool)(THIS_ _In_ const BOOL Value) PURE;
+    STDMETHOD(GetBool)(THIS_ _Out_ BOOL *pValue) PURE;
     
-    STDMETHOD(SetBoolArray)(THIS_ _In_reads_(Count) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
-    STDMETHOD(GetBoolArray)(THIS_ _Out_writes_(Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
+    STDMETHOD(SetBoolArray)(THIS_ _In_reads_(Count) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
+    STDMETHOD(GetBoolArray)(THIS_ _Out_writes_(Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -387,19 +387,19 @@ DECLARE_INTERFACE_(ID3DX11EffectVectorVariable, ID3DX11EffectVariable)
     // ID3DX11EffectVariable
 
     // ID3DX11EffectVectorVariable
-    STDMETHOD(SetBoolVector) (THIS_ _In_reads_(4) const bool *pData) PURE;
+    STDMETHOD(SetBoolVector) (THIS_ _In_reads_(4) const BOOL *pData) PURE;
     STDMETHOD(SetIntVector)  (THIS_ _In_reads_(4) const int *pData) PURE;
     STDMETHOD(SetFloatVector)(THIS_ _In_reads_(4) const float *pData) PURE;
 
-    STDMETHOD(GetBoolVector) (THIS_ _Out_writes_(4) bool *pData) PURE;
+    STDMETHOD(GetBoolVector) (THIS_ _Out_writes_(4) BOOL *pData) PURE;
     STDMETHOD(GetIntVector)  (THIS_ _Out_writes_(4) int *pData) PURE;
     STDMETHOD(GetFloatVector)(THIS_ _Out_writes_(4) float *pData) PURE;
 
-    STDMETHOD(SetBoolVectorArray) (THIS_ _In_reads_(Count*4) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
+    STDMETHOD(SetBoolVectorArray) (THIS_ _In_reads_(Count*4) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     STDMETHOD(SetIntVectorArray)  (THIS_ _In_reads_(Count*4) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     STDMETHOD(SetFloatVectorArray)(THIS_ _In_reads_(Count*4) const float *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
 
-    STDMETHOD(GetBoolVectorArray) (THIS_ _Out_writes_(Count*4) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
+    STDMETHOD(GetBoolVectorArray) (THIS_ _Out_writes_(Count*4) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     STDMETHOD(GetIntVectorArray)  (THIS_ _Out_writes_(Count*4) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
     STDMETHOD(GetFloatVectorArray)(THIS_ _Out_writes_(Count*4) float *pData, _In_ uint32_t Offset, _In_ uint32_t Count) PURE;
 };
@@ -646,6 +646,8 @@ DECLARE_INTERFACE_(ID3DX11EffectConstantBuffer, ID3DX11EffectVariable)
     STDMETHOD(UndoSetConstantBuffer)(THIS) PURE;
     STDMETHOD(GetConstantBuffer)(THIS_ _Outptr_ ID3D11Buffer **ppConstantBuffer) PURE;
     
+	STDMETHOD(CheckAndUpdate)(THIS_ ID3D11DeviceContext *pContext) PURE;
+
     STDMETHOD(SetTextureBuffer)(THIS_ _In_ ID3D11ShaderResourceView *pTextureBuffer) PURE;
     STDMETHOD(UndoSetTextureBuffer)(THIS) PURE;
     STDMETHOD(GetTextureBuffer)(THIS_ _Outptr_ ID3D11ShaderResourceView **ppTextureBuffer) PURE;
@@ -666,7 +668,7 @@ struct D3DX11_EFFECT_SHADER_DESC
     const uint8_t *pInputSignature;         // Passed into CreateInputLayout,
                                             // valid on VS and GS only
     
-    bool IsInline;                          // Is this an anonymous shader variable
+    BOOL IsInline;                          // Is this an anonymous shader variable
                                             // resulting from an inline shader assignment?
     
     
@@ -879,7 +881,7 @@ DECLARE_INTERFACE_(ID3DX11EffectPass, IUnknown)
     // IUnknown
 
     // ID3DX11EffectPass
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
     STDMETHOD(GetDesc)(THIS_ _Out_ D3DX11_PASS_DESC *pDesc) PURE;
     
     STDMETHOD(GetVertexShaderDesc)(THIS_ _Out_ D3DX11_PASS_SHADER_DESC *pDesc) PURE;
@@ -929,7 +931,7 @@ DECLARE_INTERFACE_(ID3DX11EffectTechnique, IUnknown)
     // IUnknown
 
     // ID3DX11EffectTechnique
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
     STDMETHOD(GetDesc)(THIS_ _Out_ D3DX11_TECHNIQUE_DESC *pDesc) PURE;
     
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(THIS_ _In_ uint32_t Index) PURE;
@@ -973,7 +975,7 @@ DECLARE_INTERFACE_(ID3DX11EffectGroup, IUnknown)
     // IUnknown
 
     // ID3DX11EffectGroup
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
     STDMETHOD(GetDesc)(THIS_ _Out_ D3DX11_GROUP_DESC *pDesc) PURE;
 
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(THIS_ _In_ uint32_t Index) PURE;
@@ -1017,7 +1019,7 @@ DECLARE_INTERFACE_(ID3DX11Effect, IUnknown)
     // IUnknown
 
     // ID3DX11Effect
-    STDMETHOD_(bool, IsValid)(THIS) PURE;
+    STDMETHOD_(BOOL, IsValid)(THIS) PURE;
 
     STDMETHOD(GetDevice)(THIS_ _Outptr_ ID3D11Device** ppDevice) PURE;
     
@@ -1040,7 +1042,7 @@ DECLARE_INTERFACE_(ID3DX11Effect, IUnknown)
 
     STDMETHOD(CloneEffect)(THIS_ _In_ uint32_t Flags, _Outptr_ ID3DX11Effect** ppClonedEffect ) PURE;
     STDMETHOD(Optimize)(THIS) PURE;
-    STDMETHOD_(bool, IsOptimized)(THIS) PURE;
+    STDMETHOD_(BOOL, IsOptimized)(THIS) PURE;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1078,40 +1080,11 @@ extern "C" {
 //
 //----------------------------------------------------------------------------
 
-HRESULT WINAPI D3DX11CreateEffectFromMemory( _In_reads_bytes_(DataLength) LPCVOID pData,
+__declspec(dllexport) HRESULT WINAPI D3DX11CreateEffectFromMemory( _In_reads_bytes_(DataLength) LPCVOID pData,
                                              _In_ SIZE_T DataLength,
                                              _In_ UINT FXFlags,
                                              _In_ ID3D11Device *pDevice,
-                                             _Outptr_ ID3DX11Effect **ppEffect,
-                                             _In_opt_z_ LPCSTR srcName = nullptr );
-
-//----------------------------------------------------------------------------
-// D3DX11CreateEffectFromFile
-//
-// Creates an effect instance from a compiled effect data file
-//
-// Parameters:
-//
-// [in]
-//
-//  pFileName
-//      Compiled effect file
-//  FXFlags
-//      Flags pertaining to Effect creation
-//  pDevice
-//      Pointer to the D3D11 device on which to create Effect resources
-//
-// [out]
-//
-//  ppEffect
-//      Address of the newly created Effect interface
-//
-//----------------------------------------------------------------------------
-
-HRESULT WINAPI D3DX11CreateEffectFromFile( _In_z_ LPCWSTR pFileName,
-                                           _In_ UINT FXFlags,
-                                           _In_ ID3D11Device *pDevice,
-                                           _Outptr_ ID3DX11Effect **ppEffect );
+                                             _Outptr_ ID3DX11Effect **ppEffect );
 
 //----------------------------------------------------------------------------
 // D3DX11CompileEffectFromMemory

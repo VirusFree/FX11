@@ -75,7 +75,7 @@ enum ETemplateVarType
 
 struct SEffectInvalidType : public ID3DX11EffectType
 {
-    STDMETHOD_(bool, IsValid)() override { return false; }
+    STDMETHOD_(BOOL, IsValid)() override { return false; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(_In_ uint32_t Index) override { UNREFERENCED_PARAMETER(Index); return &g_InvalidType; }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(_In_z_ LPCSTR Name) override { UNREFERENCED_PARAMETER(Name); return &g_InvalidType; }
@@ -89,7 +89,7 @@ template<typename IBaseInterface>
 struct TEffectInvalidVariable : public IBaseInterface
 {
 public:
-    STDMETHOD_(bool, IsValid)() override { return false; }
+    STDMETHOD_(BOOL, IsValid)() override { return false; }
     STDMETHOD_(ID3DX11EffectType*, GetType)() override { return &g_InvalidType; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_VARIABLE_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
 
@@ -147,12 +147,12 @@ public:
     STDMETHOD(GetIntArray)(_Out_writes_(Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; }
 
-    STDMETHOD(SetBool)(_In_ const bool Value) override { UNREFERENCED_PARAMETER(Value); return E_FAIL; }
-    STDMETHOD(GetBool)(_Out_ bool *pValue) override { UNREFERENCED_PARAMETER(pValue); return E_FAIL; }
+    STDMETHOD(SetBool)(_In_ const BOOL Value) override { UNREFERENCED_PARAMETER(Value); return E_FAIL; }
+    STDMETHOD(GetBool)(_Out_ BOOL *pValue) override { UNREFERENCED_PARAMETER(pValue); return E_FAIL; }
 
-    STDMETHOD(SetBoolArray)(_In_reads_(Count) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
+    STDMETHOD(SetBoolArray)(_In_reads_(Count) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; }
-    STDMETHOD(GetBoolArray)(_Out_writes_(Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
+    STDMETHOD(GetBoolArray)(_Out_writes_(Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; }
 
     IUNKNOWN_IMP(SEffectInvalidScalarVariable, ID3DX11EffectScalarVariable, ID3DX11EffectVariable);
@@ -164,20 +164,20 @@ struct SEffectInvalidVectorVariable : public TEffectInvalidVariable<ID3DX11Effec
 public:
     STDMETHOD(SetFloatVector)(_In_reads_(4) const float *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
     STDMETHOD(SetIntVector)(_In_reads_(4) const int *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
-    STDMETHOD(SetBoolVector)(_In_reads_(4) const bool *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
+    STDMETHOD(SetBoolVector)(_In_reads_(4) const BOOL *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
 
     STDMETHOD(GetFloatVector)(_Out_writes_(4) float *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
     STDMETHOD(GetIntVector)(_Out_writes_(4) int *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
-    STDMETHOD(GetBoolVector)(_Out_writes_(4) bool *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
+    STDMETHOD(GetBoolVector)(_Out_writes_(4) BOOL *pData) override { UNREFERENCED_PARAMETER(pData); return E_FAIL; };
 
-    STDMETHOD(SetBoolVectorArray) (_In_reads_(4*Count) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
+    STDMETHOD(SetBoolVectorArray) (_In_reads_(4*Count) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; };
     STDMETHOD(SetIntVectorArray)  (_In_reads_(4*Count) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; };
     STDMETHOD(SetFloatVectorArray)(_In_reads_(4*Count) const float *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; };
 
-    STDMETHOD(GetBoolVectorArray) (_Out_writes_(4*Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
+    STDMETHOD(GetBoolVectorArray) (_Out_writes_(4*Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; };
     STDMETHOD(GetIntVectorArray)  (_Out_writes_(4*Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override
         { UNREFERENCED_PARAMETER(pData); UNREFERENCED_PARAMETER(Offset); UNREFERENCED_PARAMETER(Count); return E_FAIL; };
@@ -326,6 +326,8 @@ public:
     STDMETHOD(GetConstantBuffer)(_Outptr_ ID3D11Buffer **ppConstantBuffer) override { UNREFERENCED_PARAMETER(ppConstantBuffer); return E_FAIL; }
     STDMETHOD(UndoSetConstantBuffer)() override { return E_FAIL; }
 
+	STDMETHOD(CheckAndUpdate)(ID3D11DeviceContext *pContext) { return E_FAIL; }
+
     STDMETHOD(SetTextureBuffer)(_In_ ID3D11ShaderResourceView *pTextureBuffer) override { UNREFERENCED_PARAMETER(pTextureBuffer); return E_FAIL; }
     STDMETHOD(GetTextureBuffer)(_Outptr_ ID3D11ShaderResourceView **ppTextureBuffer) override { UNREFERENCED_PARAMETER(ppTextureBuffer); return E_FAIL; }
     STDMETHOD(UndoSetTextureBuffer)() override { return E_FAIL; }
@@ -426,7 +428,7 @@ public:
 struct SEffectInvalidPass : public ID3DX11EffectPass
 {
 public:
-    STDMETHOD_(bool, IsValid)() override { return false; }
+    STDMETHOD_(BOOL, IsValid)() override { return false; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_PASS_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
 
     STDMETHOD(GetVertexShaderDesc)(_Out_ D3DX11_PASS_SHADER_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
@@ -449,7 +451,7 @@ public:
 struct SEffectInvalidTechnique : public ID3DX11EffectTechnique
 {
 public:
-    STDMETHOD_(bool, IsValid)() override { return false; }
+    STDMETHOD_(BOOL, IsValid)() override { return false; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_TECHNIQUE_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
 
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(_In_ uint32_t Index) override { UNREFERENCED_PARAMETER(Index); return &g_InvalidScalarVariable; }
@@ -466,7 +468,7 @@ public:
 struct SEffectInvalidGroup : public ID3DX11EffectGroup
 {
 public:
-    STDMETHOD_(bool, IsValid)() override { return false; }
+    STDMETHOD_(BOOL, IsValid)() override { return false; }
     STDMETHOD(GetDesc)(_Out_ D3DX11_GROUP_DESC *pDesc) override { UNREFERENCED_PARAMETER(pDesc); return E_FAIL; }
 
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByIndex)(_In_ uint32_t Index) override { UNREFERENCED_PARAMETER(Index); return &g_InvalidScalarVariable; }
@@ -519,7 +521,7 @@ ID3DX11EffectVariable * GetAnnotationByNameHelper(_In_z_ const char *pClassName,
 
 template<typename SVarType>
 _Success_(return)
-bool GetVariableByIndexHelper(_In_ uint32_t Index, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
+BOOL GetVariableByIndexHelper(_In_ uint32_t Index, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
                               _In_opt_ uint8_t *pBaseAddress, _Outptr_ SVarType **ppMember, _Outptr_ void **ppDataPtr)
 {
     static LPCSTR pFuncName = "ID3DX11EffectVariable::GetMemberByIndex";
@@ -537,7 +539,7 @@ bool GetVariableByIndexHelper(_In_ uint32_t Index, _In_ uint32_t  VariableCount,
 
 template<typename SVarType>
 _Success_(return)
-bool GetVariableByNameHelper(_In_z_ LPCSTR Name, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
+BOOL GetVariableByNameHelper(_In_z_ LPCSTR Name, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
                              _In_opt_ uint8_t *pBaseAddress, _Outptr_ SVarType **ppMember, _Outptr_ void **ppDataPtr, _Out_ uint32_t* pIndex)
 {
     static LPCSTR pFuncName = "ID3DX11EffectVariable::GetMemberByName";
@@ -548,7 +550,7 @@ bool GetVariableByNameHelper(_In_z_ LPCSTR Name, _In_ uint32_t  VariableCount, _
         return false;
     }
 
-    bool bHasSuper = false;
+    BOOL bHasSuper = false;
 
     for (uint32_t i = 0; i < VariableCount; ++ i)
     {
@@ -588,7 +590,7 @@ bool GetVariableByNameHelper(_In_z_ LPCSTR Name, _In_ uint32_t  VariableCount, _
 
 template<typename SVarType>
 _Success_(return)
-bool GetVariableBySemanticHelper(_In_z_ LPCSTR Semantic, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
+BOOL GetVariableBySemanticHelper(_In_z_ LPCSTR Semantic, _In_ uint32_t  VariableCount, _In_reads_(VariableCount) SVarType *pVariables, 
                                  _In_opt_ uint8_t *pBaseAddress, _Outptr_ SVarType **ppMember, _Outptr_ void **ppDataPtr, _Out_ uint32_t* pIndex)
 {
     static LPCSTR pFuncName = "ID3DX11EffectVariable::GetMemberBySemantic";
@@ -615,7 +617,7 @@ bool GetVariableBySemanticHelper(_In_z_ LPCSTR Semantic, _In_ uint32_t  Variable
     return false;
 }
 
-inline bool AreBoundsValid(_In_ uint32_t Offset, _In_ uint32_t Count, _In_ const void *pData, _In_ const SType *pType, _In_ uint32_t  TotalUnpackedSize)
+inline BOOL AreBoundsValid(_In_ uint32_t Offset, _In_ uint32_t Count, _In_ const void *pData, _In_ const SType *pType, _In_ uint32_t  TotalUnpackedSize)
 {
     if (Count == 0) return true;
     uint32_t  singleElementSize = pType->GetTotalUnpackedSize(true);
@@ -628,7 +630,7 @@ inline bool AreBoundsValid(_In_ uint32_t Offset, _In_ uint32_t Count, _In_ const
 }
 
 // Note that the branches in this code is based on template parameters and will be compiled out
-template<ETemplateVarType SourceType, ETemplateVarType DestType, typename SRC_TYPE, bool ValidatePtr>
+template<ETemplateVarType SourceType, ETemplateVarType DestType, typename SRC_TYPE, BOOL ValidatePtr>
 __forceinline HRESULT CopyScalarValue(_In_ SRC_TYPE SrcValue, _Out_ void *pDest, _In_z_ const char *pFuncName)
 {
     HRESULT hr = S_OK;
@@ -657,7 +659,7 @@ __forceinline HRESULT CopyScalarValue(_In_ SRC_TYPE SrcValue, _Out_ void *pDest,
             break;
 
         case ETVT_bool:
-            *(bool*)pDest = (SrcValue != 0) ? true : false;
+            *(BOOL*)pDest = (SrcValue != 0) ? true : false;
             break;
 
         default:
@@ -681,7 +683,7 @@ __forceinline HRESULT CopyScalarValue(_In_ SRC_TYPE SrcValue, _Out_ void *pDest,
             break;
 
         case ETVT_bool:
-            *(bool*)pDest = (SrcValue != 0) ? true : false;
+            *(BOOL*)pDest = (SrcValue != 0) ? true : false;
             break;
 
         default:
@@ -705,7 +707,7 @@ __forceinline HRESULT CopyScalarValue(_In_ SRC_TYPE SrcValue, _Out_ void *pDest,
             break;
 
         case ETVT_bool:
-            *(bool*)pDest = (SrcValue != 0.0f) ? true : false;
+            *(BOOL*)pDest = (SrcValue != 0.0f) ? true : false;
             break;
 
         default:
@@ -729,7 +731,7 @@ __forceinline HRESULT CopyScalarValue(_In_ SRC_TYPE SrcValue, _Out_ void *pDest,
             break;
 
         case ETVT_bool:
-            *(bool*)pDest = (SrcValue != 0) ? true : false;
+            *(BOOL*)pDest = (SrcValue != 0) ? true : false;
             break;
 
         default:
@@ -824,7 +826,7 @@ lExit:
 template<typename IBaseInterface>
 struct TVariable : public IBaseInterface
 {
-    STDMETHOD_(bool, IsValid)() override { return true; }
+    STDMETHOD_(BOOL, IsValid)() override { return true; }
 
     STDMETHOD_(ID3DX11EffectVariable*, GetMemberByIndex)(_In_ uint32_t Index)
     {
@@ -1204,7 +1206,7 @@ struct TTopLevelVariable : public SVariable, public IBaseInterface
         return (TTopLevelVariable<ID3DX11EffectVariable> *)this;
     }
 
-    bool IsArray()
+    BOOL IsArray()
     {
         return (pType->Elements > 0);
     }
@@ -1310,7 +1312,7 @@ lExit:
         return pTopLevelEntity;
     }
 
-    bool IsArray()
+    BOOL IsArray()
     {
         return (pType->Elements > 0 && !IsSingleElement);
     }
@@ -1491,7 +1493,7 @@ lExit:
 // create arrays of global variables using SGlobalVariable
 
 // Requires that IBaseInterface have SVariable's members, GetTotalUnpackedSize() and DirtyVariable()
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TNumericVariable : public IBaseInterface
 {
     STDMETHOD(SetRawValue)(_In_reads_bytes_(ByteCount) const void *pData, _In_ uint32_t ByteOffset, _In_ uint32_t ByteCount) override 
@@ -1557,7 +1559,7 @@ lExit:
 // ID3DX11EffectScalarVariable (TFloatScalarVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TFloatScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 {
     STDMETHOD(SetFloat)(_In_ const float Value) override;
@@ -1572,14 +1574,14 @@ struct TFloatScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotati
     STDMETHOD(SetIntArray)(_In_reads_(Count) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
     STDMETHOD(GetIntArray)(_Out_writes_(Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 
-    STDMETHOD(SetBool)(_In_ const bool Value) override;
-    STDMETHOD(GetBool)(_Out_ bool *pValue) override;
+    STDMETHOD(SetBool)(_In_ const BOOL Value) override;
+    STDMETHOD(GetBool)(_Out_ BOOL *pValue) override;
 
-    STDMETHOD(SetBoolArray)(_In_reads_(Count) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
-    STDMETHOD(GetBoolArray)(_Out_writes_(Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(SetBoolArray)(_In_reads_(Count) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(GetBoolArray)(_Out_writes_(Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 };
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value)
 {
@@ -1589,14 +1591,14 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value
     return CopyScalarValue<ETVT_Float, ETVT_Float, float, false>(Value, Data.pNumericFloat, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetFloat(float *pValue)
 {
     return CopyScalarValue<ETVT_Float, ETVT_Float, float, true>(*Data.pNumericFloat, pValue, "ID3DX11EffectScalarVariable::GetFloat");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1607,7 +1609,7 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const 
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1615,7 +1617,7 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float 
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetFloatArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Value)
 {
@@ -1625,14 +1627,14 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Val
     return CopyScalarValue<ETVT_Int, ETVT_Float, int, false>(Value, Data.pNumericFloat, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetInt(int *pValue)
 {
     return CopyScalarValue<ETVT_Float, ETVT_Int, float, true>(*Data.pNumericFloat, pValue, "ID3DX11EffectScalarVariable::GetInt");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1643,7 +1645,7 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const in
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1651,39 +1653,39 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pDa
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetIntArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const bool Value)
+HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const BOOL Value)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBool";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return CopyScalarValue<ETVT_bool, ETVT_Float, bool, false>(Value, Data.pNumericFloat, pFuncName);
+    return CopyScalarValue<ETVT_bool, ETVT_Float, BOOL, false>(Value, Data.pNumericFloat, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetBool(bool *pValue)
+HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetBool(BOOL *pValue)
 {
     return CopyScalarValue<ETVT_Float, ETVT_bool, float, true>(*Data.pNumericFloat, pValue, "ID3DX11EffectScalarVariable::GetBool");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const BOOL *pData, uint32_t Offset, uint32_t Count)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBoolArray";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return SetScalarArray<ETVT_bool, ETVT_Float, bool, float>(pData, Data.pNumericFloat, Offset, Count, 
+    return SetScalarArray<ETVT_bool, ETVT_Float, BOOL, float>(pData, Data.pNumericFloat, Offset, Count, 
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(BOOL *pData, uint32_t Offset, uint32_t Count)
 {
-    return GetScalarArray<ETVT_Float, ETVT_bool, float, bool>(Data.pNumericFloat, pData, Offset, Count, 
+    return GetScalarArray<ETVT_Float, ETVT_bool, float, BOOL>(Data.pNumericFloat, pData, Offset, Count, 
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetBoolArray");
 }
 
@@ -1691,7 +1693,7 @@ HRESULT TFloatScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *p
 // ID3DX11EffectScalarVariable (TIntScalarVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TIntScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 {
     STDMETHOD(SetFloat)(_In_ const float Value) override;
@@ -1706,14 +1708,14 @@ struct TIntScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotation
     STDMETHOD(SetIntArray)(_In_reads_(Count) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
     STDMETHOD(GetIntArray)(_Out_writes_(Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 
-    STDMETHOD(SetBool)(_In_ const bool Value) override;
-    STDMETHOD(GetBool)(_Out_ bool *pValue) override;
+    STDMETHOD(SetBool)(_In_ const BOOL Value) override;
+    STDMETHOD(GetBool)(_Out_ BOOL *pValue) override;
 
-    STDMETHOD(SetBoolArray)(_In_reads_(Count) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
-    STDMETHOD(GetBoolArray)(_Out_writes_(Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(SetBoolArray)(_In_reads_(Count) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(GetBoolArray)(_Out_writes_(Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 };
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value)
 {
@@ -1723,14 +1725,14 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value)
     return CopyScalarValue<ETVT_Float, ETVT_Int, float, false>(Value, Data.pNumericInt, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetFloat(float *pValue)
 {
     return CopyScalarValue<ETVT_Int, ETVT_Float, int, true>(*Data.pNumericInt, pValue, "ID3DX11EffectScalarVariable::GetFloat");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1741,7 +1743,7 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const fl
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1749,7 +1751,7 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float *p
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetFloatArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Value)
 {
@@ -1759,14 +1761,14 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Value
     return CopyScalarValue<ETVT_Int, ETVT_Int, int, false>(Value, Data.pNumericInt, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetInt(int *pValue)
 {
     return CopyScalarValue<ETVT_Int, ETVT_Int, int, true>(*Data.pNumericInt, pValue, "ID3DX11EffectScalarVariable::GetInt");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1777,7 +1779,7 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const int 
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1785,39 +1787,39 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pData
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetIntArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const bool Value)
+HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const BOOL Value)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBool";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return CopyScalarValue<ETVT_bool, ETVT_Int, bool, false>(Value, Data.pNumericInt, pFuncName);
+    return CopyScalarValue<ETVT_bool, ETVT_Int, BOOL, false>(Value, Data.pNumericInt, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetBool(bool *pValue)
+HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetBool(BOOL *pValue)
 {
     return CopyScalarValue<ETVT_Int, ETVT_bool, int, true>(*Data.pNumericInt, pValue, "ID3DX11EffectScalarVariable::GetBool");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const BOOL *pData, uint32_t Offset, uint32_t Count)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBoolArray";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return SetScalarArray<ETVT_bool, ETVT_Int, bool, int>(pData, Data.pNumericInt, Offset, Count, 
+    return SetScalarArray<ETVT_bool, ETVT_Int, BOOL, int>(pData, Data.pNumericInt, Offset, Count, 
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(BOOL *pData, uint32_t Offset, uint32_t Count)
 {
-    return GetScalarArray<ETVT_Int, ETVT_bool, int, bool>(Data.pNumericInt, pData, Offset, Count, 
+    return GetScalarArray<ETVT_Int, ETVT_bool, int, BOOL>(Data.pNumericInt, pData, Offset, Count, 
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetBoolArray");
 }
 
@@ -1825,7 +1827,7 @@ HRESULT TIntScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *pDa
 // ID3DX11EffectScalarVariable (TBoolScalarVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TBoolScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 {
     STDMETHOD(SetFloat)(_In_ const float Value) override;
@@ -1840,14 +1842,14 @@ struct TBoolScalarVariable : public TNumericVariable<IBaseInterface, IsAnnotatio
     STDMETHOD(SetIntArray)(_In_reads_(Count) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
     STDMETHOD(GetIntArray)(_Out_writes_(Count) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 
-    STDMETHOD(SetBool)(_In_ const bool Value) override;
-    STDMETHOD(GetBool)(_Out_ bool *pValue) override;
+    STDMETHOD(SetBool)(_In_ const BOOL Value) override;
+    STDMETHOD(GetBool)(_Out_ BOOL *pValue) override;
 
-    STDMETHOD(SetBoolArray)(_In_reads_(Count) const bool *pData, uint32_t Offset, _In_ uint32_t Count) override;
-    STDMETHOD(GetBoolArray)(_Out_writes_(Count) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(SetBoolArray)(_In_reads_(Count) const BOOL *pData, uint32_t Offset, _In_ uint32_t Count) override;
+    STDMETHOD(GetBoolArray)(_Out_writes_(Count) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 };
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value)
 {
@@ -1857,14 +1859,14 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetFloat(float Value)
     return CopyScalarValue<ETVT_Float, ETVT_Bool, float, false>(Value, Data.pNumericBool, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetFloat(float *pValue)
 {
     return CopyScalarValue<ETVT_Bool, ETVT_Float, BOOL, true>(*Data.pNumericBool, pValue, "ID3DX11EffectScalarVariable::GetFloat");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1875,7 +1877,7 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetFloatArray(const f
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1883,7 +1885,7 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetFloatArray(float *
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetFloatArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Value)
 {
@@ -1893,14 +1895,14 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetInt(const int Valu
     return CopyScalarValue<ETVT_Int, ETVT_Bool, int, false>(Value, Data.pNumericBool, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetInt(int *pValue)
 {
     return CopyScalarValue<ETVT_Bool, ETVT_Int, BOOL, true>(*Data.pNumericBool, pValue, "ID3DX11EffectScalarVariable::GetInt");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1911,7 +1913,7 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetIntArray(const int
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -1919,39 +1921,39 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetIntArray(int *pDat
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetIntArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const bool Value)
+HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetBool(const BOOL Value)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBool";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return CopyScalarValue<ETVT_bool, ETVT_Bool, bool, false>(Value, Data.pNumericBool, pFuncName);
+    return CopyScalarValue<ETVT_bool, ETVT_Bool, BOOL, false>(Value, Data.pNumericBool, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetBool(bool *pValue)
+HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetBool(BOOL *pValue)
 {
     return CopyScalarValue<ETVT_Bool, ETVT_bool, BOOL, true>(*Data.pNumericBool, pValue, "ID3DX11EffectScalarVariable::GetBool");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::SetBoolArray(const BOOL *pData, uint32_t Offset, uint32_t Count)
 {
     static LPCSTR pFuncName = "ID3DX11EffectScalarVariable::SetBoolArray";
     if (IsAnnotation) return AnnotationInvalidSetCall(pFuncName);
     DirtyVariable();
-    return SetScalarArray<ETVT_bool, ETVT_Bool, bool, BOOL>(pData, Data.pNumericBool, Offset, Count, 
+    return SetScalarArray<ETVT_bool, ETVT_Bool, BOOL, BOOL>(pData, Data.pNumericBool, Offset, Count, 
         pType, GetTotalUnpackedSize(), pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
-HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(BOOL *pData, uint32_t Offset, uint32_t Count)
 {
-    return GetScalarArray<ETVT_Bool, ETVT_bool, BOOL, bool>(Data.pNumericBool, pData, Offset, Count, 
+    return GetScalarArray<ETVT_Bool, ETVT_bool, BOOL, BOOL>(Data.pNumericBool, pData, Offset, Count, 
         pType, GetTotalUnpackedSize(), "ID3DX11EffectScalarVariable::GetBoolArray");
 }
 
@@ -1959,23 +1961,23 @@ HRESULT TBoolScalarVariable<IBaseInterface, IsAnnotation>::GetBoolArray(bool *pD
 // ID3DX11EffectVectorVariable (TVectorVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType >
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType >
 struct TVectorVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 {
-    STDMETHOD(SetBoolVector) (_In_reads_(4) const bool *pData) override; 
+    STDMETHOD(SetBoolVector) (_In_reads_(4) const BOOL *pData) override; 
     STDMETHOD(SetIntVector)  (_In_reads_(4) const int *pData) override;
     STDMETHOD(SetFloatVector)(_In_reads_(4) const float *pData) override;
 
-    STDMETHOD(GetBoolVector) (_Out_writes_(4) bool *pData) override; 
+    STDMETHOD(GetBoolVector) (_Out_writes_(4) BOOL *pData) override; 
     STDMETHOD(GetIntVector)  (_Out_writes_(4) int *pData) override;
     STDMETHOD(GetFloatVector)(_Out_writes_(4) float *pData) override;
 
 
-    STDMETHOD(SetBoolVectorArray) (_In_reads_(Count*4) const bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override; 
+    STDMETHOD(SetBoolVectorArray) (_In_reads_(Count*4) const BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override; 
     STDMETHOD(SetIntVectorArray)  (_In_reads_(Count*4) const int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
     STDMETHOD(SetFloatVectorArray)(_In_reads_(Count*4) const float *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 
-    STDMETHOD(GetBoolVectorArray) (_Out_writes_(Count*4) bool *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override; 
+    STDMETHOD(GetBoolVectorArray) (_Out_writes_(Count*4) BOOL *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override; 
     STDMETHOD(GetIntVectorArray)  (_Out_writes_(Count*4) int *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
     STDMETHOD(GetFloatVectorArray)(_Out_writes_(Count*4) float *pData, _In_ uint32_t Offset, _In_ uint32_t Count) override;
 };
@@ -2008,7 +2010,7 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    ((int*)pDest)[i] = ((bool*)pSource)[i] ? -1 : 0;
+                    ((int*)pDest)[i] = ((BOOL*)pSource)[i] ? -1 : 0;
 
                 pDest = ((float*) pDest) + dstVecSize;
                 pSource = ((float*) pSource) + srcVecSize;
@@ -2019,7 +2021,7 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    ((float*)pDest)[i] = ((bool*)pSource)[i] ? -1.0f : 0.0f;
+                    ((float*)pDest)[i] = ((BOOL*)pSource)[i] ? -1.0f : 0.0f;
 
                 pDest = ((float*) pDest) + dstVecSize;
                 pSource = ((float*) pSource) + srcVecSize;
@@ -2030,9 +2032,9 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    ((bool*)pDest)[i] = (((int*)pSource)[i] != 0) ? true : false;
+                    ((BOOL*)pDest)[i] = (((int*)pSource)[i] != 0) ? true : false;
 
-                pDest = ((bool*) pDest) + dstVecSize;
+                pDest = ((BOOL*) pDest) + dstVecSize;
                 pSource = ((float*) pSource) + srcVecSize;
             }
             break;
@@ -2081,9 +2083,9 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    ((bool*)pDest)[i] = (((int*)pSource)[i] != 0) ? true : false;
+                    ((BOOL*)pDest)[i] = (((int*)pSource)[i] != 0) ? true : false;
 
-                pDest = ((bool*) pDest) + dstVecSize;
+                pDest = ((BOOL*) pDest) + dstVecSize;
                 pSource = ((float*) pSource) + srcVecSize;
             }
             break;
@@ -2132,9 +2134,9 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    ((bool*)pDest)[i] = (((float*)pSource)[i] != 0.0f) ? true : false;
+                    ((BOOL*)pDest)[i] = (((float*)pSource)[i] != 0.0f) ? true : false;
 
-                pDest = ((bool*) pDest) + dstVecSize;
+                pDest = ((BOOL*) pDest) + dstVecSize;
                 pSource = ((float*) pSource) + srcVecSize;
             }
             break;
@@ -2151,10 +2153,10 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    reinterpret_cast<int*>(pDest)[i] = reinterpret_cast<const bool*>(pSource)[i] ? -1 : 0;
+                    reinterpret_cast<int*>(pDest)[i] = reinterpret_cast<const BOOL*>(pSource)[i] ? -1 : 0;
 
                 pDest = ((float*) pDest) + dstVecSize;
-                pSource = ((bool*) pSource) + srcVecSize;
+                pSource = ((BOOL*) pSource) + srcVecSize;
             }
             break;
 
@@ -2162,10 +2164,10 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    reinterpret_cast<int*>(pDest)[i] = reinterpret_cast<const bool*>(pSource)[i] ? -1 : 0;
+                    reinterpret_cast<int*>(pDest)[i] = reinterpret_cast<const BOOL*>(pSource)[i] ? -1 : 0;
 
                 pDest = ((float*) pDest) + dstVecSize;
-                pSource = ((bool*) pSource) + srcVecSize;
+                pSource = ((BOOL*) pSource) + srcVecSize;
             }
             break;
 
@@ -2173,10 +2175,10 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             for (size_t j=0; j<vecCount; j++)
             {
                 for (size_t i=0; i<elementCount; i++)
-                    reinterpret_cast<float*>(pDest)[i] = reinterpret_cast<const bool*>(pSource)[i] ? -1.0f : 0.0f;
+                    reinterpret_cast<float*>(pDest)[i] = reinterpret_cast<const BOOL*>(pSource)[i] ? -1.0f : 0.0f;
 
                 pDest = ((float*) pDest) + dstVecSize;
-                pSource = ((bool*) pSource) + srcVecSize;
+                pSource = ((BOOL*) pSource) + srcVecSize;
             }
             break;
 
@@ -2185,8 +2187,8 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
             {
                 memcpy(pDest, pSource, elementCount);
 
-                pDest = ((bool*) pDest) + dstVecSize;
-                pSource = ((bool*) pSource) + srcVecSize;
+                pDest = ((BOOL*) pDest) + dstVecSize;
+                pSource = ((BOOL*) pSource) + srcVecSize;
             }
             break;
 
@@ -2203,7 +2205,7 @@ void __forceinline CopyDataWithTypeConversion(_Out_ void *pDest,
 
 // Float Vector
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType >::SetFloatVector(const float *pData)
 {
@@ -2222,7 +2224,7 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetFloatVector(float *pData)
 {
@@ -2241,7 +2243,7 @@ lExit:
 
 // Int Vector
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType >::SetIntVector(const int *pData)
 {
@@ -2260,7 +2262,7 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetIntVector(int *pData)
 {
@@ -2279,9 +2281,9 @@ lExit:
 
 // Bool Vector
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
-HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType >::SetBoolVector(const bool *pData)
+HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType >::SetBoolVector(const BOOL *pData)
 {
     HRESULT hr = S_OK;
 
@@ -2299,9 +2301,9 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
-HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetBoolVector(bool *pData)
+HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetBoolVector(BOOL *pData)
 {
     HRESULT hr = S_OK;
 
@@ -2318,7 +2320,7 @@ lExit:
 
 // Vector Arrays /////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::SetFloatVectorArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2343,7 +2345,7 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetFloatVectorArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2368,7 +2370,7 @@ lExit:
 
 // int
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::SetIntVectorArray(const int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2393,7 +2395,7 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
 HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetIntVectorArray(int *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2416,11 +2418,11 @@ lExit:
     return hr;
 }
 
-// bool
+// BOOL
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
-HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::SetBoolVectorArray(const bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::SetBoolVectorArray(const BOOL *pData, uint32_t Offset, uint32_t Count)
 {
     HRESULT hr = S_OK;
     static LPCSTR pFuncName = "ID3DX11EffectVectorVariable::SetBoolVectorArray";
@@ -2443,9 +2445,9 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation, ETemplateVarType BaseType>
+template<typename IBaseInterface, BOOL IsAnnotation, ETemplateVarType BaseType>
 _Use_decl_annotations_
-HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetBoolVectorArray(bool *pData, uint32_t Offset, uint32_t Count)
+HRESULT TVectorVariable<IBaseInterface, IsAnnotation, BaseType>::GetBoolVectorArray(BOOL *pData, uint32_t Offset, uint32_t Count)
 {
     HRESULT hr = S_OK;
     static LPCSTR pFuncName = "ID3DX11EffectVectorVariable::GetBoolVectorArray";
@@ -2569,7 +2571,7 @@ lExit:
 // ID3DX11EffectMatrixVariable (TMatrixVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TMatrixVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 {
     STDMETHOD(SetMatrix)(_In_reads_(16) const float *pData) override;
@@ -2593,7 +2595,7 @@ struct TMatrixVariable : public TNumericVariable<IBaseInterface, IsAnnotation>
 
 #pragma warning (push)
 #pragma warning (disable : 6101)
-template<bool Transpose>
+template<BOOL Transpose>
 static void SetMatrixTransposeHelper(_In_ const SType *pType, _Out_writes_bytes_(64) uint8_t *pDestData, _In_reads_(16) const float* pMatrix)
 {
     uint32_t registers, entries;
@@ -2624,7 +2626,7 @@ static void SetMatrixTransposeHelper(_In_ const SType *pType, _Out_writes_bytes_
     }
 }
 
-template<bool Transpose>
+template<BOOL Transpose>
 static void GetMatrixTransposeHelper(_In_ const SType *pType, _In_reads_bytes_(64) uint8_t *pSrcData, _Out_writes_(16) float* pMatrix)
 {
     uint32_t registers, entries;
@@ -2654,7 +2656,7 @@ static void GetMatrixTransposeHelper(_In_ const SType *pType, _In_reads_bytes_(6
     }
 }
 
-template<bool Transpose, bool IsSetting, bool ExtraIndirection>
+template<BOOL Transpose, BOOL IsSetting, BOOL ExtraIndirection>
 HRESULT DoMatrixArrayInternal(_In_ const SType *pType, _In_ uint32_t  TotalUnpackedSize,
                               _Out_ uint8_t *pEffectData,
                               void *pMatrixData,
@@ -2748,7 +2750,7 @@ lExit:
 }
 #pragma warning (pop)
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrix(const float *pData)
 {
@@ -2759,7 +2761,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrix(const float *pD
         Data.pNumeric, const_cast<float*>(pData), 0, 1, pFuncName);
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrix(float *pData)
 {
@@ -2767,7 +2769,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrix(float *pData)
         Data.pNumeric, pData, 0, 1, "ID3DX11EffectMatrixVariable::GetMatrix");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2778,7 +2780,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixArray(const floa
         Data.pNumeric, const_cast<float*>(pData), Offset, Count, "ID3DX11EffectMatrixVariable::SetMatrixArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2786,7 +2788,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixArray(float *pDa
         Data.pNumeric, pData, Offset, Count, "ID3DX11EffectMatrixVariable::GetMatrixArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixPointerArray(const float **ppData, uint32_t Offset, uint32_t Count)
 {
@@ -2797,7 +2799,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixPointerArray(con
         Data.pNumeric, const_cast<float**>(ppData), Offset, Count, "ID3DX11EffectMatrixVariable::SetMatrixPointerArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixPointerArray(float **ppData, uint32_t Offset, uint32_t Count)
 {
@@ -2805,7 +2807,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixPointerArray(flo
         Data.pNumeric, ppData, Offset, Count, "ID3DX11EffectMatrixVariable::GetMatrixPointerArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTranspose(const float *pData)
 {
@@ -2816,7 +2818,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTranspose(const 
         Data.pNumeric, const_cast<float*>(pData), 0, 1, "ID3DX11EffectMatrixVariable::SetMatrixTranspose");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTranspose(float *pData)
 {
@@ -2824,7 +2826,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTranspose(float 
         Data.pNumeric, pData, 0, 1, "ID3DX11EffectMatrixVariable::GetMatrixTranspose");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTransposeArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2835,7 +2837,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTransposeArray(c
         Data.pNumeric, const_cast<float*>(pData), Offset, Count, "ID3DX11EffectMatrixVariable::SetMatrixTransposeArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTransposeArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -2843,7 +2845,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTransposeArray(f
         Data.pNumeric, pData, Offset, Count, "ID3DX11EffectMatrixVariable::GetMatrixTransposeArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTransposePointerArray(const float **ppData, uint32_t Offset, uint32_t Count)
 {
@@ -2854,7 +2856,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::SetMatrixTransposePointer
         Data.pNumeric, const_cast<float**>(ppData), Offset, Count, "ID3DX11EffectMatrixVariable::SetMatrixTransposePointerArray");
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTransposePointerArray(float **ppData, uint32_t Offset, uint32_t Count)
 {
@@ -2864,7 +2866,7 @@ HRESULT TMatrixVariable<IBaseInterface, IsAnnotation>::GetMatrixTransposePointer
 
 // Optimize commonly used fast paths
 // (non-annotations only!)
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 struct TMatrix4x4Variable : public TMatrixVariable<IBaseInterface, false>
 {
     STDMETHOD(SetMatrix)(_In_reads_(16) const float *pData) override;
@@ -2957,7 +2959,7 @@ inline static void Matrix4x4Copy(_In_reads_bytes_(64) const void *pSrc, _Out_wri
 // Note that branches in this code is based on template parameters and will be compiled out
 #pragma warning (push)
 #pragma warning (disable : 6101)
-template<bool IsColumnMajor, bool Transpose, bool IsSetting>
+template<BOOL IsColumnMajor, BOOL Transpose, BOOL IsSetting>
 inline HRESULT DoMatrix4x4ArrayInternal(_In_ uint8_t *pEffectData,
                                         _When_(IsSetting, _In_reads_bytes_(64 * Count))
                                         _When_(!IsSetting, _Out_writes_bytes_(64 * Count))
@@ -3022,7 +3024,7 @@ lExit:
 }
 #pragma warning (pop)
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrix(const float *pData)
 {
@@ -3035,7 +3037,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrix(const float
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrix(float *pData)
 {
@@ -3047,7 +3049,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrix(float *pDat
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -3060,7 +3062,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixArray(const 
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -3072,7 +3074,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixArray(float 
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixTranspose(const float *pData)
 {
@@ -3085,7 +3087,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixTranspose(co
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixTranspose(float *pData)
 {
@@ -3097,7 +3099,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixTranspose(fl
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixTransposeArray(const float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -3110,7 +3112,7 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::SetMatrixTransposeArr
 #endif
 }
 
-template<typename IBaseInterface, bool IsColumnMajor>
+template<typename IBaseInterface, BOOL IsColumnMajor>
 _Use_decl_annotations_
 HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixTransposeArray(float *pData, uint32_t Offset, uint32_t Count)
 {
@@ -3174,14 +3176,14 @@ HRESULT TMatrix4x4Variable<IBaseInterface, IsColumnMajor>::GetMatrixTransposeArr
 // ID3DX11EffectStringVariable (TStringVariable implementation)
 //////////////////////////////////////////////////////////////////////////
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 struct TStringVariable : public IBaseInterface
 {
     STDMETHOD(GetString)(_Outptr_result_z_ LPCSTR *ppString) override;
     STDMETHOD(GetStringArray)( _Out_writes_(Count) LPCSTR *ppStrings, _In_ uint32_t Offset, _In_ uint32_t Count ) override;
 };
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 HRESULT TStringVariable<IBaseInterface, IsAnnotation>::GetString(LPCSTR *ppString)
 {
@@ -3205,7 +3207,7 @@ lExit:
     return hr;
 }
 
-template<typename IBaseInterface, bool IsAnnotation>
+template<typename IBaseInterface, BOOL IsAnnotation>
 _Use_decl_annotations_
 #pragma warning(suppress : 6054)
 HRESULT TStringVariable<IBaseInterface, IsAnnotation>::GetStringArray( LPCSTR *ppStrings, uint32_t Offset, uint32_t Count)
@@ -4084,7 +4086,7 @@ struct TShaderVariable : public IBaseInterface
     STDMETHOD(GetOutputSignatureElementDesc)(_In_ uint32_t ShaderIndex, _In_ uint32_t Element, _Out_ D3D11_SIGNATURE_PARAMETER_DESC *pDesc)  override;
     STDMETHOD(GetPatchConstantSignatureElementDesc)(_In_ uint32_t ShaderIndex, _In_ uint32_t Element, _Out_ D3D11_SIGNATURE_PARAMETER_DESC *pDesc)  override;
 
-    STDMETHOD_(bool, IsValid)();
+    STDMETHOD_(BOOL, IsValid)();
 };
 
 template<typename IBaseInterface>
@@ -4228,10 +4230,10 @@ lExit:
 }
 
 template<typename IBaseInterface>
-bool TShaderVariable<IBaseInterface>::IsValid()
+BOOL TShaderVariable<IBaseInterface>::IsValid()
 {
     uint32_t numElements = IsArray()? pType->Elements : 1;
-    bool valid = true;
+    BOOL valid = true;
     while( numElements > 0 && ( valid = Data.pShader[ numElements-1 ].IsValid ) )
         numElements--;
     return valid;
@@ -4249,7 +4251,7 @@ public:
     STDMETHOD(SetBlendState)(_In_ uint32_t Index, _In_ ID3D11BlendState *pState)  override;
     STDMETHOD(UndoSetBlendState)(_In_ uint32_t Index)  override;
     STDMETHOD(GetBackingStore)(_In_ uint32_t Index, _Out_ D3D11_BLEND_DESC *pDesc)  override;
-    STDMETHOD_(bool, IsValid)()  override;
+    STDMETHOD_(BOOL, IsValid)()  override;
 };
 
 template<typename IBaseInterface>
@@ -4353,10 +4355,10 @@ lExit:
 }
 
 template<typename IBaseInterface>
-bool TBlendVariable<IBaseInterface>::IsValid()
+BOOL TBlendVariable<IBaseInterface>::IsValid()
 {
     uint32_t numElements = IsArray()? pType->Elements : 1;
-    bool valid = true;
+    BOOL valid = true;
     while( numElements > 0 && ( valid = Data.pBlend[ numElements-1 ].IsValid ) )
         numElements--;
     return valid;
@@ -4375,7 +4377,7 @@ public:
     STDMETHOD(SetDepthStencilState)(_In_ uint32_t Index, _In_ ID3D11DepthStencilState *pState)  override;
     STDMETHOD(UndoSetDepthStencilState)(_In_ uint32_t Index)  override;
     STDMETHOD(GetBackingStore)(_In_ uint32_t Index, _Out_ D3D11_DEPTH_STENCIL_DESC *pDesc) override;
-    STDMETHOD_(bool, IsValid)()  override;
+    STDMETHOD_(BOOL, IsValid)()  override;
 };
 
 template<typename IBaseInterface>
@@ -4478,10 +4480,10 @@ lExit:
 }
 
 template<typename IBaseInterface>
-bool TDepthStencilVariable<IBaseInterface>::IsValid()
+BOOL TDepthStencilVariable<IBaseInterface>::IsValid()
 {
     uint32_t numElements = IsArray()? pType->Elements : 1;
-    bool valid = true;
+    BOOL valid = true;
     while( numElements > 0 && ( valid = Data.pDepthStencil[ numElements-1 ].IsValid ) )
         numElements--;
     return valid;
@@ -4500,7 +4502,7 @@ public:
     STDMETHOD(SetRasterizerState)(_In_ uint32_t Index, _In_ ID3D11RasterizerState *pState)  override;
     STDMETHOD(UndoSetRasterizerState)(_In_ uint32_t Index)  override;
     STDMETHOD(GetBackingStore)(_In_ uint32_t Index, _Out_ D3D11_RASTERIZER_DESC *pDesc)  override;
-    STDMETHOD_(bool, IsValid)()  override;
+    STDMETHOD_(BOOL, IsValid)()  override;
 };
 
 template<typename IBaseInterface>
@@ -4604,10 +4606,10 @@ lExit:
 }
 
 template<typename IBaseInterface>
-bool TRasterizerVariable<IBaseInterface>::IsValid()
+BOOL TRasterizerVariable<IBaseInterface>::IsValid()
 {
     uint32_t numElements = IsArray()? pType->Elements : 1;
-    bool valid = true;
+    BOOL valid = true;
     while( numElements > 0 && ( valid = Data.pRasterizer[ numElements-1 ].IsValid ) )
         numElements--;
     return valid;
@@ -4961,7 +4963,7 @@ struct SMember : public TVariable<TMember<ID3DX11EffectVariable> >
 };
 
 // creates a new variable of the appropriate polymorphic type where pVar was
-HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnnotation);
-SMember * CreateNewMember(_In_ SType *pType, _In_ bool IsAnnotation);
+HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ BOOL IsAnnotation);
+SMember * CreateNewMember(_In_ SType *pType, _In_ BOOL IsAnnotation);
 
 #pragma warning(pop)

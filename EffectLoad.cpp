@@ -227,7 +227,7 @@ HRESULT CEffectHeap::AddString(const char *pString, char **ppPointer)
 }
 
 // This data is forcibly aligned, so make sure you account for that in calculating heap size
-template <bool bCopyData>
+template <BOOL bCopyData>
 HRESULT CEffectHeap::AddDataInternal(_In_reads_bytes_(dwSize) const void *pData, _In_ uint32_t dwSize, _Outptr_ void **ppPointer)
 {
     CCheckedDword chkFinalSize( m_dwSize );
@@ -566,7 +566,7 @@ lExit:
     return hr;
 }
 
-HRESULT CEffectLoader::FixupInterfacePointer(_Inout_ SInterface **ppInterface, _In_ bool CheckBackgroundInterfaces)
+HRESULT CEffectLoader::FixupInterfacePointer(_Inout_ SInterface **ppInterface, _In_ BOOL CheckBackgroundInterfaces)
 {
     HRESULT hr = S_OK;
     if (*ppInterface != &g_NullInterface && *ppInterface != nullptr)
@@ -2555,7 +2555,7 @@ HRESULT CEffectLoader::GrabShaderData(SShaderBlock *pShaderBlock)
         SSamplerBlock *pSampler = nullptr;
         SConstantBuffer *pCB = nullptr;
         SVariable *pVariable = nullptr;
-        bool isFX9TextureLoad = false;
+        BOOL isFX9TextureLoad = false;
         D3D11_SHADER_INPUT_BIND_DESC ResourceDesc;
 
         pShaderBlock->pReflectionData->pReflection->GetResourceBindingDesc( i, &ResourceDesc );
@@ -3255,7 +3255,7 @@ lExit:
 }
 
 // Move all reflection data to private heap
-HRESULT CEffectLoader::ReallocateReflectionData( bool Cloning )
+HRESULT CEffectLoader::ReallocateReflectionData( BOOL Cloning )
 {
     HRESULT hr = S_OK;
     CEffectHeap *pHeap = &m_pReflection->m_Heap;
@@ -3612,7 +3612,7 @@ uint32_t  CEffectLoader::CalculateShaderBlockSize()
 // Move all (non-reflection) effect data to private heap
 #pragma warning(push)
 #pragma warning(disable: 4616 6239 )
-HRESULT CEffectLoader::ReallocateEffectData( bool Cloning )
+HRESULT CEffectLoader::ReallocateEffectData( BOOL Cloning )
 {
     HRESULT hr = S_OK;
     CEffectHeap *pHeap = &m_pEffect->m_Heap;
@@ -3907,7 +3907,7 @@ HRESULT CEffectLoader::ReallocateEffectData( bool Cloning )
         VN( *ppTopLevelEntity );
 
         // This might be set to false later, for supporting textures inside classes
-        const bool bGlobalMemberDataBlock = true;
+        const BOOL bGlobalMemberDataBlock = true;
 
         if( Cloning )
         {

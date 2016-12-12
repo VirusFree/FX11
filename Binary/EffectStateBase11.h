@@ -40,7 +40,7 @@ struct LValue
     D3D_SHADER_VARIABLE_TYPE m_Type;    // data type allows
     uint32_t        m_Cols;             // number of [m_Type]'s required (1 for a scalar, 4 for a vector)
     uint32_t        m_Indices;          // max index allowable (if LHS is an array; otherwise this is 1)
-    bool            m_VectorScalar;     // can be both vector and scalar (setting as a scalar sets all m_Indices values simultaneously)
+    BOOL            m_VectorScalar;     // can be both vector and scalar (setting as a scalar sets all m_Indices values simultaneously)
     const RValue    *m_pRValue;         // pointer to table of allowable RHS "late resolve" values
     ELhsType        m_LhsType;          // ELHS_* enum value that corresponds to this entry
     uint32_t        m_Offset;           // offset into the given block type where this value should be written
